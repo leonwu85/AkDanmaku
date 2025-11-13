@@ -1,5 +1,12 @@
 Change Log
 
+## 1.1.3 2025-11-13
+
+### Bug Fixes:
+- 修复 clamp 函数兼容性问题，移除不兼容的 kotlin.math.clamp 导入
+- 使用项目自带的 com.kuaishou.akdanmaku.utils.clamp 函数
+- 确保构建成功通过
+
 ## 1.1.2 2025-11-13
 
 ### Bug Fixes:

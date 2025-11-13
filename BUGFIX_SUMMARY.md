@@ -1,4 +1,4 @@
-# AkDanmaku v1.1.2 构建问题修复总结
+# AkDanmaku v1.1.3 构建问题修复总结
 
 ## 问题描述
 用户报告在使用 `implementation 'com.github.leonwu85:AkDanmaku:1.1.1'` 时遇到构建失败，异常信息：
@@ -7,6 +7,7 @@ Cannot invoke "java.util.List.get(int)" because "path" is null
 ```
 
 ## 版本更新
+- **最新版本**: 1.1.3 (2025-11-13)
 - **修复版本**: 1.1.2 (2025-11-13)
 - **原问题版本**: 1.1.1
 
@@ -90,7 +91,7 @@ Cannot invoke "java.util.List.get(int)" because "path" is null
 4. 考虑升级到更新的 Android Gradle Plugin 版本以获得更好的兼容性
 
 ## 版本信息
-- **修复版本**: 1.1.2 (2025-11-13)
+- **最新版本**: 1.1.3 (2025-11-13)
 - **Android Gradle Plugin**: 8.2.2
 - **Gradle**: 8.2
 - **Compile SDK**: 35
