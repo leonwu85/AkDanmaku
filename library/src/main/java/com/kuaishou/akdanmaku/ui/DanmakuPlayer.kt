@@ -32,7 +32,7 @@ import android.os.Looper
 import android.os.Message
 import android.util.Log
 import android.view.Choreographer
-import androidx.core.math.MathUtils.clamp
+import com.kuaishou.akdanmaku.utils.clamp
 import com.kuaishou.akdanmaku.DanmakuConfig
 import com.kuaishou.akdanmaku.data.DanmakuItemData
 import com.kuaishou.akdanmaku.data.DanmakuItem
@@ -48,6 +48,7 @@ import com.kuaishou.akdanmaku.utils.ObjectPool
 import java.lang.ref.WeakReference
 import java.util.concurrent.Semaphore
 import kotlin.math.max
+import kotlin.math.clamp
 
 /**
  *

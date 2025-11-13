@@ -1,6 +1,6 @@
 Change Log
 
-## 1.1.2 2024-11-13
+## 1.1.2 2025-11-13
 
 ### Bug Fixes:
 - 修复 Ashley ECS 引擎中 `getEntitiesFor()` 返回的 ImmutableList 空指针异常

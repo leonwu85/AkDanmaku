@@ -23,51 +23,54 @@
 
 package com.kuaishou.akdanmaku.utils
 
-import android.graphics.PointF
-import android.graphics.RectF
-import com.badlogic.gdx.utils.Pools
-import com.kuaishou.akdanmaku.data.DanmakuItemData
-import com.kuaishou.akdanmaku.data.DanmakuItem
-import com.kuaishou.akdanmaku.ui.DanmakuPlayer
+import java.util.*
 
 /**
- * 对象池
- *
- * @author Xana
- * @since 2021-07-07
+ * 自定义的 clamp 函数，用于替代 androidx.core.math.MathUtils.clamp
  */
-object ObjectPool {
-
-  private val rectPool = SimplePool<RectF>(200) { RectF() }
-  private val pointPool = SimplePool<PointF>(200) { PointF() }
-  private val itemPool = SimplePool<DanmakuItem>(1000)
-
-  fun obtainRectF(): RectF = rectPool.acquire() ?: RectF()
-
-  fun releaseRectF(rectF: RectF) {
-    if (rectPool.release(rectF)) {
-      rectF.setEmpty()
+fun <T : Comparable<T>> clamp(value: T, min: T, max: T): T {
+    return when {
+        value < min -> min
+        value > max -> max
+        else -> value
     }
-  }
+}
 
-  fun obtainPointF(): PointF = pointPool.acquire() ?: PointF()
+/**
+ * 简单的对象池实现，用于替代 com.badlogic.gdx.utils.Pools.SimplePool
+ * 以解决兼容性问题
+ */
+class SimplePool<T>(private val maxPoolSize: Int = 100) {
+    private val pool = Stack<T>()
+    private var newObjectCallback: (() -> T)? = null
 
-  fun releasePointF(point: PointF) {
-    if (pointPool.release(point)) {
-      point.set(0f, 0f)
+    constructor(maxPoolSize: Int, factory: () -> T) : this(maxPoolSize) {
+        this.newObjectCallback = factory
     }
-  }
 
-  internal fun obtainItem(data: DanmakuItemData, player: DanmakuPlayer): DanmakuItem {
-    return itemPool.acquire()?.also {
-      it.data = data
-      it.timer = player.engine.timer
-    } ?: DanmakuItem(data, player)
-  }
-
-  fun releaseItem(item: DanmakuItem) {
-    if (itemPool.release(item)) {
-      item.recycle()
+    constructor(factory: () -> T) : this(100) {
+        this.newObjectCallback = factory
     }
-  }
+
+    fun acquire(): T? {
+        return if (pool.isNotEmpty()) {
+            pool.pop()
+        } else {
+            newObjectCallback?.invoke()
+        }
+    }
+
+    fun release(obj: T): Boolean {
+        if (pool.size < maxPoolSize) {
+            pool.push(obj)
+            return true
+        }
+        return false
+    }
+
+    fun fill(count: Int) {
+        repeat(count) {
+            newObjectCallback?.invoke()?.let { pool.push(it) }
+        }
+    }
 }

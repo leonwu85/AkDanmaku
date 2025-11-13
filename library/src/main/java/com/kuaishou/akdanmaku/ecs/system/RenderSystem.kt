@@ -30,7 +30,6 @@ import android.os.Message
 import android.os.SystemClock
 import android.util.Log
 import androidx.annotation.MainThread
-import androidx.core.graphics.withTranslation
 import com.badlogic.gdx.utils.Pool
 import com.kuaishou.akdanmaku.DanmakuConfig
 import com.kuaishou.akdanmaku.cache.DrawingCache
@@ -310,10 +309,11 @@ internal class RenderSystem(context: DanmakuContext) : DanmakuEntitySystem(conte
         true
       } ?: false
     } else {
-      canvas.withTranslation(obj.position.x, obj.position.y) {
-        danmakuContext.renderer.updatePaint(obj.item, displayer, config)
-        danmakuContext.renderer.draw(obj.item, canvas, displayer, config)
-      }
+      val saveCount = canvas.save()
+      canvas.translate(obj.position.x, obj.position.y)
+      danmakuContext.renderer.updatePaint(obj.item, displayer, config)
+      danmakuContext.renderer.draw(obj.item, canvas, displayer, config)
+      canvas.restoreToCount(saveCount)
       false
     }
   }

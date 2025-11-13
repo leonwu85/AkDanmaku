@@ -23,7 +23,7 @@
 
 package com.kuaishou.akdanmaku.collection
 
-import androidx.core.util.Pools
+import com.kuaishou.akdanmaku.utils.SimplePool
 import java.util.*
 
 /**
@@ -34,8 +34,11 @@ import java.util.*
  */
 class OrderedRangeList<T>(var start: Int, var end: Int, private val margin: Int = 0) {
 
-  private val holderPool = Pools.SimplePool<Holder<T>>(100).apply {
-    repeat(100) { release(Holder()) }
+  private val holderPool: SimplePool<Holder<T>> = SimplePool(100) { Holder<T>() }.apply {
+    repeat(100) { 
+      val holder = Holder<T>()
+      release(holder)
+    }
   }
 
   private val holders = mutableListOf<Holder<T>>().apply {
@@ -170,7 +173,7 @@ class OrderedRangeList<T>(var start: Int, var end: Int, private val margin: Int 
     holders.add(index, h)
 //    Log.d(DanmakuEngine.TAG, "[Retainer] add range $h")
     dataHolderMap[data] = h
-    place.forEach(::recycle)
+    place.forEach { holder -> recycle(holder) }
     return true
   }
 

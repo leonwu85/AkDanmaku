@@ -64,7 +64,7 @@ class DanmakuPlayController(
   private val hitRect = RectF()
   private val gestureDetector = GestureDetector(danmakuView.context, object : GestureDetector.SimpleOnGestureListener() {
 
-    override fun onDown(e: MotionEvent?): Boolean {
+    override fun onDown(e: MotionEvent): Boolean {
       return true
     }
 
