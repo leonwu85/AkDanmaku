@@ -23,6 +23,7 @@
 
 package com.kuaishou.akdanmaku.ecs.base
 
+import android.util.Log
 import com.badlogic.ashley.core.*
 import com.kuaishou.akdanmaku.ecs.DanmakuContext
 import java.util.*
@@ -37,9 +38,18 @@ internal abstract class DanmakuSortedSystem(
 
   override fun addedToEngine(engine: Engine) {
     sortedEntities.clear()
-    val newEntities = engine.getEntitiesFor(family)
-    if (newEntities.size() > 0) {
-      sortedEntities.addAll(newEntities)
+    try {
+      val newEntities = engine.getEntitiesFor(family)
+      if (newEntities != null && newEntities.size() > 0) {
+        for (i in 0 until newEntities.size()) {
+          val entity = newEntities[i]
+          if (entity != null) {
+            sortedEntities.add(entity)
+          }
+        }
+      }
+    } catch (e: Exception) {
+      Log.e("DanmakuSortedSystem", "Exception during engine initialization", e)
     }
     sortedEntities.sortWith(comparator)
     shouldSort = false
@@ -94,4 +104,3 @@ internal abstract class DanmakuSortedSystem(
 
   }
 }
-

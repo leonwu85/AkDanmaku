@@ -1,5 +1,13 @@
 Change Log
 
+## 1.1.2 2024-11-13
+
+### Bug Fixes:
+- 修复 Ashley ECS 引擎中 `getEntitiesFor()` 返回的 ImmutableList 空指针异常
+- 修复 `Cannot invoke "java.util.List.get(int)" because "path" is null` 错误
+- 增强 DanmakuSortedSystem 和 RenderSystem 的异常处理机制
+- 添加实体为 null 时的安全检查
+
 ## 1.1.1 2024-11-13
 
 ### Bug Fixes:

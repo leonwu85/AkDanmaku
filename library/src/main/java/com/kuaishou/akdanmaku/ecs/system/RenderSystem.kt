@@ -99,8 +99,9 @@ internal class RenderSystem(context: DanmakuContext) : DanmakuEntitySystem(conte
     
     // 优化：使用传统for循环替代函数式编程，减少对象创建
     entities?.let { entityList ->
-      for (i in 0 until entityList.size()) {
-        val entity = entityList[i]
+      try {
+        for (i in 0 until entityList.size()) {
+          val entity = entityList[i] ?: continue
         val item = entity.dataComponent?.item ?: continue
       val drawState = item.drawState
       val filter = entity.filter
@@ -143,6 +144,9 @@ internal class RenderSystem(context: DanmakuContext) : DanmakuEntitySystem(conte
           newRenderObjects.add(renderObj)
         }
       }
+      }
+    } catch (e: Exception) {
+      Log.e(DanmakuEngine.TAG, "[RenderSystem] Exception during entity processing", e)
     }
     }
 
