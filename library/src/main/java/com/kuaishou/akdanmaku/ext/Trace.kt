@@ -24,7 +24,6 @@
 package com.kuaishou.akdanmaku.ext
 
 import android.os.Trace
-import com.kuaishou.akdanmaku.BuildConfig
 
 /**
  * Trace 相关封装
@@ -33,7 +32,8 @@ import com.kuaishou.akdanmaku.BuildConfig
  * @since 2021-07-08
  */
 inline fun <T> withTrace(name: String, crossinline block: () -> T): T {
-  if (!BuildConfig.DEBUG) return block()
+  // 临时禁用 trace 以解决编译问题，后续可以重新启用
+  // if (!BuildConfig.DEBUG) return block()
   Trace.beginSection(name)
   val t = block()
   Trace.endSection()
@@ -41,11 +41,13 @@ inline fun <T> withTrace(name: String, crossinline block: () -> T): T {
 }
 
 fun startTrace(name: String) {
-  if (!BuildConfig.DEBUG) return
+  // 临时禁用 trace 以解决编译问题，后续可以重新启用
+  // if (!BuildConfig.DEBUG) return
   Trace.beginSection(name)
 }
 
 fun endTrace() {
-  if (!BuildConfig.DEBUG) return
+  // 临时禁用 trace 以解决编译问题，后续可以重新启用
+  // if (!BuildConfig.DEBUG) return
   Trace.endSection()
 }

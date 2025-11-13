@@ -5,6 +5,8 @@ apply plugin: 'maven-publish'
 configurations { natives }
 
 android {
+    namespace 'com.kuaishou.akdanmaku'
+    
     defaultConfig {
         versionCode 1
         versionName "1.0"
@@ -49,7 +51,31 @@ dependencies {
     // LibGdx-Ashley(ECS)
     implementation "com.badlogicgames.ashley:ashley:$ashleyVersion"
 
-    implementation 'androidx.core:core-ktx:1.6.0'
+    implementation 'androidx.core:core-ktx:1.9.0'
+    
+    // 强制指定 Kotlin 版本以解决冲突
+    constraints {
+        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7") {
+            version {
+                strictly "1.9.20"
+            }
+        }
+        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8") {
+            version {
+                strictly "1.9.20"
+            }
+        }
+        implementation("org.jetbrains.kotlin:kotlin-stdlib") {
+            version {
+                strictly "1.9.20"
+            }
+        }
+        implementation("org.jetbrains.kotlin:kotlin-stdlib-common") {
+            version {
+                strictly "1.9.20"
+            }
+        }
+    }
 }
 
 // called every time gradle gets executed, takes the native dependencies of
@@ -103,4 +129,3 @@ afterEvaluate {
         }
     }
 }
-

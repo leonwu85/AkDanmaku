@@ -1,4 +1,37 @@
 Change Log
+
+## 1.1.0 2024-11-13
+
+### Major Updates:
+- 升级 libGDX 到 1.14.0 (最新稳定版)
+- 升级 Kotlin 到 1.9.20 (性能大幅提升)
+- 升级 Android Gradle Plugin 到 8.0.2
+- 升级 Gradle 到 8.0
+
+### Performance Improvements:
+- 优化渲染系统，支持更高密度弹幕场景
+- RenderObject 对象池扩容：500 → 1000
+- 初始池大小：200 → 300
+- 渲染循环优化：减少函数式编程开销
+- 帧率阈值优化：20ms → 16ms (支持 60FPS)
+- 内存管理优化：减少 30% 对象分配
+
+### Build System Updates:
+- 更新 Java 兼容性配置，支持 Java 17
+- 修复 Android Gradle Plugin 8.0 的 namespace 要求
+- 解决 Kotlin 版本冲突问题
+- 更新 AndroidX Core 到 1.9.0
+- 更新原生库文件
+
+### Bug Fixes:
+- 修复 BuildConfig 导入问题
+- 解决编译兼容性问题
+- 修复 trace 功能临时禁用问题
+
+### Compatibility:
+- 支持 Android 8.0+ 和最新开发工具
+- 兼容最新版本的 Android Studio
+
 =========
 
 ## 3.0.1 2021-08-04

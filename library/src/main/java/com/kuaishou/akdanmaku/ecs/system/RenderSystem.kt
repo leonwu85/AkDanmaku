@@ -94,25 +94,30 @@ internal class RenderSystem(context: DanmakuContext) : DanmakuEntitySystem(conte
     lastAllGeneration = config.allGeneration
     releaseDiscardResults()
 
-    val newRenderObjects = entities
-      .filter { entity ->
-        val item = entity.dataComponent?.item ?: return@filter false
-        val drawState = item.drawState
-        entity.filter?.filtered == false &&
+    // 优化：预分配列表容量，减少扩容开销
+    val newRenderObjects = ArrayList<RenderObject>(entities.size())
+    
+    // 优化：使用传统for循环替代函数式编程，减少对象创建
+    for (i in 0 until entities.size()) {
+      val entity = entities[i]
+      val item = entity.dataComponent?.item ?: continue
+      val drawState = item.drawState
+      val filter = entity.filter
+      
+      if (filter?.filtered == false &&
           item.state >= ItemState.Measured &&
           drawState.visibility &&
           drawState.measureGeneration == config.measureGeneration &&
-          drawState.layoutGeneration == config.layoutGeneration
-      }
-      .mapNotNullTo(ArrayList(entities.size())) { entity ->
-        val item = entity.dataComponent?.item ?: return@mapNotNullTo null
-        val drawState = item.drawState
+          drawState.layoutGeneration == config.layoutGeneration) {
+        
         val cache = item.drawState.drawingCache
         val action = entity.action
+        
         if (listener != null && item.shownGeneration != config.firstShownGeneration) {
           item.shownGeneration = config.firstShownGeneration
           callbackHandler.obtainMessage(MSG_DANMAKU_SHOWN, item).sendToTarget()
         }
+        
         renderObjectPool.obtain().apply {
           cache.increaseReference()
           this.item = item
@@ -133,8 +138,11 @@ internal class RenderSystem(context: DanmakuContext) : DanmakuEntitySystem(conte
             alpha = 1f
             holding = true
           }
+        }.let { renderObj ->
+          newRenderObjects.add(renderObj)
         }
       }
+    }
 
     synchronized(this) {
       renderResult?.let {
@@ -348,10 +356,11 @@ internal class RenderSystem(context: DanmakuContext) : DanmakuEntitySystem(conte
   )
 
   companion object {
-    private const val MAX_RENDER_OBJECT_POOL_SIZE = 500
-    private const val INITIAL_POOL_SIZE = 200
+    // 增加对象池大小以支持高密度弹幕
+    private const val MAX_RENDER_OBJECT_POOL_SIZE = 1000
+    private const val INITIAL_POOL_SIZE = 300
 
-    private const val OVERLOAD_INTERVAL = 20
+    private const val OVERLOAD_INTERVAL = 16 // 降低到16ms以支持60FPS
 
     private const val MSG_DANMAKU_SHOWN = 0x01
   }
