@@ -98,9 +98,10 @@ internal class RenderSystem(context: DanmakuContext) : DanmakuEntitySystem(conte
     val newRenderObjects = ArrayList<RenderObject>(entities.size())
     
     // 优化：使用传统for循环替代函数式编程，减少对象创建
-    for (i in 0 until entities.size()) {
-      val entity = entities[i]
-      val item = entity.dataComponent?.item ?: continue
+    entities?.let { entityList ->
+      for (i in 0 until entityList.size()) {
+        val entity = entityList[i]
+        val item = entity.dataComponent?.item ?: continue
       val drawState = item.drawState
       val filter = entity.filter
       
@@ -142,6 +143,7 @@ internal class RenderSystem(context: DanmakuContext) : DanmakuEntitySystem(conte
           newRenderObjects.add(renderObj)
         }
       }
+    }
     }
 
     synchronized(this) {
