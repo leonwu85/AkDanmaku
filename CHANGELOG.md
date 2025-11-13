@@ -1,5 +1,11 @@
 Change Log
 
+## 1.1.1 2024-11-13
+
+### Bug Fixes:
+- 修复 RenderSystem 中的空指针异常崩溃问题
+- 增强实体列表访问的安全性
+
 ## 1.1.0 2024-11-13
 
 ### Major Updates:
