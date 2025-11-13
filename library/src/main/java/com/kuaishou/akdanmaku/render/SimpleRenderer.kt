@@ -36,7 +36,6 @@ import com.kuaishou.akdanmaku.ui.DanmakuDisplayer
 import com.kuaishou.akdanmaku.utils.Size
 import java.util.HashMap
 import kotlin.math.roundToInt
-import kotlin.math.clamp
 
 /**
  * 一个默认的，实现了简单只绘制文字和描边的弹幕渲染器

@@ -48,7 +48,6 @@ import com.kuaishou.akdanmaku.utils.ObjectPool
 import java.lang.ref.WeakReference
 import java.util.concurrent.Semaphore
 import kotlin.math.max
-import kotlin.math.clamp
 
 /**
  *
